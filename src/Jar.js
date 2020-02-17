@@ -6,9 +6,15 @@ class Jar extends Component{
     {
         super(props)
         this.state = {
-            newUser : '',
-            users : []
-        };
+            userData:{
+                uid : '',
+                name : '',
+                balance: 0
+            },
+            userList: [],
+            total: 0,
+            panalty:10
+        }
     }
 
     // addUser = (e)=>
@@ -26,18 +32,41 @@ class Jar extends Component{
     //     console.log(this.state.users)
     // }
 
-    changeUserInput(input){
+    
+    handleChange = (e) =>{
+        let user = e.target.value;
+        let id = this.state.userList.length+1;
+        console.log(user);
+        
         this.setState({
-            newUser:input
-        },()=>console.log(input))
+            userData:{
+                uid : id,
+                name : user,
+                balance: 0
+            }
+        })
+    } 
+
+    handlerAddBtn = () =>{
+        let userData = this.state.userData;
+        this.setState({
+            userList: [...this.state.userList,userData]
+        })
+        console.log(this.state.userList);
     }
-    addToList(input){
-        let userArray = this.state.users;
 
-        userArray.push(input);
-
+    addPanelty(item){
+        console.log(item);
+        item.balance += this.state.panalty; 
         this.setState({
-            users:userArray
+            total: this.state.total +  this.state.panalty
+        })   
+    }
+
+    substractPanelty(item){
+        item.balance -= this.state.panalty; 
+        this.setState({
+            total: this.state.total -  this.state.panalty
         })
     }
 
@@ -47,14 +76,29 @@ class Jar extends Component{
                 <h1>Hello {this.props.location.uname}</h1>
                 <br/>
                 {/* <form onSubmit = {this.addUser}> */}
-                <input type="text" name="newUser" onChange= { (e)=>this.changeUserInput(e.target.value)} value={this.state.newUser}/>
-                <button onClick={ ()=>this.addToList(this.state.newUser) }>Add</button>
+                <input
+                    type="text" id="user"
+                    name="user" placeholder="Enter User Name"
+                    value={this.state.userData.name}
+                    onChange = {this.handleChange}
+                />
+                <button type="reset" onClick={this.handlerAddBtn}>add</button>
         {/* <input type="button" name="add" value="Add"/> */}
         {/* <p>your value is {this.state.newUser}</p> */}
                 {/* </form> */}
-                <ul>
-        {this.state.users.map( (val)=> <li><span>[ + ]</span>{val}<span>[ - ]</span></li>)}
-                </ul>
+                <h3>Total = {this.state.total} </h3>
+                {
+                    this.state.userList.map((user)=>{
+                        
+                        //
+                        return <div key={user.uid}>
+                        <ul>
+                            <li> {user.name} <button type="button" onClick={() => this.addPanelty(user)}> + </button> {user.balance} <button type="button" onClick={() => this.substractPanelty(user)}> - </button></li>
+                        </ul>
+                        </div>
+                        //
+                    })                        
+                }
             </div>
         );
     }
