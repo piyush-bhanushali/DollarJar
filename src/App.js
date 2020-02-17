@@ -1,29 +1,21 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React, { Component } from 'react';
 import './App.css';
-import HomePage from './HomePage';
+import { BrowserRouter as Router,Switch } from 'react-router-dom';
+import Route from 'react-router-dom/Route'
+import Home from './Home';
+import Jar from './Jar';
 
-function Home() {
-  return <h1>Home</h1>
-}
-
-function About() {
-  return <h1>About</h1>
-}
-
-function App() {
-  return (
-    //<div>
-    //  <HomePage />
-    //</div>
-    <Router>
-      <Switch>
-        <Route path="/" component = {Home}/>
-        <Route path="/about" component = {About}/>
-      </Switch>
-    </Router>
-
-  );
+class App extends Component {
+  render(){
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Home}/>
+          <Route path='/jar' component={Jar}/>
+        </Switch>
+      </Router>
+    );
+  }
 }
 
 export default App;

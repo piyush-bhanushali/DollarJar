@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import ReactDOM from "react-dom";
-import DollarJar from "./DollarJar";
-import App from "./App";
+import DJar from "./DJar";
+import {BrowserRouter as Router,Switch,Route,Link, Redirect} from "react-router-dom";
 
 class HomePage extends Component {
 
@@ -11,43 +9,38 @@ class HomePage extends Component {
         redirect: false
     }
 
-    namechange = (e) => {
+    submitChnage = (e) => {
         e.preventDefault();
-        const name = e.target.elements.email.value;
-        console.log(name);
+        const name = e.target.elements.name.value;
+        //console.log(name);
         this.setState({
-            name: name,
-            redirect: true
+             name: name,
+             redirect: true 
         })
 
     }
 
     render() {
-        return (
-            <Router>
-                <Switch>
-                    <Route path = "/" component = {HomePage}/>
-                    <Route path = "/DollarJar" component = {DollarJar}/>
-                </Switch>
-            </Router>
-        );
-    }
+        if(this.state.redirect)
+        {
+            return <Redirect to={{
 
-    
-}
-function HomePage() {
-    <div>
-            <DollarJar name={this.state.name}/>
-                <div>
-                    <h1> Welcome</h1>
-                    <div>
-                        <form onSubmit={this.namechange}>
-                            <input type="text" placeholder="" name="email" /> 
-                            <button name="enter" type="submit">Click</button>
-                        </form>
-                    </div>
-                </div>
-        </div>
+                pathname: '/djar',
+                state:{
+                    name:this.state.name
+                }
+            }}/>
+        }
+        return (
+                        <div>
+                            <form onSubmit={this.submitChnage}>
+                                <input type="text" placeholder="Enter Your Name" name="name" />
+                                <br />
+                                <button name="enter" type="submit">Submit</button>
+                            </form>
+                        </div>
+        )
+    }
 }
 
 export default HomePage;
